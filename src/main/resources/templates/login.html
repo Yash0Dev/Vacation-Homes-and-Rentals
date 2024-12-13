@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Register</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center">Welcome</h2>
+        <button class="btn btn-primary" id="loginBtn">Login</button>
+        <button class="btn btn-success" id="registerBtn">Register</button>
+        <hr>
+        <div id="formContainer">
+            <form id="loginForm">
+                <h3>Login</h3>
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" class="form-control" id="username" placeholder="Enter username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" id="password" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+
+            <form id="registerForm" style="display: none;">
+                <h3>Register</h3>
+                <div class="form-group">
+                    <label for="newUsername">Username:</label>
+                    <input type="text" class="form-control" id="newUsername" placeholder="Enter username" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">Password:</label>
+                    <input type="password" class="form-control" id="newPassword" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="btn btn-success">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+
+        loginBtn.onclick = () => {
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+        };
+
+        registerBtn.onclick = () => {
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'block';
+        };
+
+        loginForm.onsubmit = (e) => {
+            e.preventDefault();
+            fetch('http://localhost:8080/api/User/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    username: document.getElementById('username').value,
+                    password: document.getElementById('password').value,
+                }),
+            }).then(response => alert('Login Successful!')).catch(err => console.error(err));
+            window.location.href = "/properties";
+        };
+
+        registerForm.onsubmit = (e) => {
+            e.preventDefault();
+            fetch('http://localhost:8080/api/User/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    username: document.getElementById('newUsername').value,
+                    password: document.getElementById('newPassword').value,
+                }),
+            }).then(response => alert('Registration Successful!')).catch(err => console.error(err));
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+        };
+    </script>
+</body>
+</html>

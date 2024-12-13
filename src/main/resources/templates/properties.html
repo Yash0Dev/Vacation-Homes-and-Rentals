@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Properties</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center">Property Listings</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Price</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody id="propertyList"></tbody>
+        </table>
+        <hr>
+        <h2 class="text-center">Recommendations</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+        <tbody id="recommendations"></tbody>
+    </div>
+
+    <script>
+        // Fetch Properties
+        fetch('http://localhost:8080/api/properties/list')
+            .then(response => response.json())
+            .then(data => {
+                const propertyList = document.getElementById('propertyList');
+                data.forEach(property => {
+                    const row = `
+                        <tr>
+                            <td>${property.id}</td>
+                            <td>${property.name}</td>
+                            <td>${property.location}</td>
+                            <td>${property.price}</td>
+                            <td>${property.type}</td>
+                        </tr>`;
+                    propertyList.innerHTML += row;
+                });
+            });
+
+        // Example user preferences (can be dynamic or based on user input)
+const userPreferences = {
+    "beach": 0.8,
+    "mountain": 0.6,
+    "city": 0.7,
+    "lake": 0.9,
+    "desert": 0.5
+};
+
+// Make the POST request to the Flask API
+fetch('http://localhost:5000/recommend', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        preferences: userPreferences
+    })
+}).then(response => response.json())
+            .then(data => {
+                const recommendations = document.getElementById('recommendations');
+                data.forEach(property => {
+                    const row = `
+                        <tr>
+                            <td>${property.id}</td>
+                            <td>${property.name}</td>
+                            <td>${property.price}</td>
+                            <td>${property.category}</td>
+                        </tr>`;
+                    recommendations.innerHTML += row;
+                });
+            });
+    </script>
+</body>
+</html>

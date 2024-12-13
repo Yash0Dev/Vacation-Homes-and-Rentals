@@ -11,7 +11,7 @@ import com.vacationhomes.entity.User;
 import com.vacationhomes.repository.UserRepository;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/User")
 public class UserController {
     @Autowired
     private UserRepository userRepository;
@@ -28,6 +28,7 @@ public class UserController {
 
     @PostMapping("/register")
     public String register(@RequestBody User user) {
+
         userRepository.save(user);
         return "User registered successfully!";
     }

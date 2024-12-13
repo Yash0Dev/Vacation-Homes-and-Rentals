@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile/Checkout</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center">Profile</h2>
+        <div id="profileDetails">
+            <!-- Profile details loaded here -->
+        </div>
+        <hr>
+        <h2 class="text-center">Checkout</h2>
+        <form id="checkoutForm">
+            <div class="form-group">
+                <label for="propertyId">Property ID:</label>
+                <input type="number" class="form-control" id="propertyId" placeholder="Enter property ID" required>
+            </div>
+            <div class="form-group">
+                <label for="paymentDetails">Payment Details:</label>
+                <input type="text" class="form-control" id="paymentDetails" placeholder="Enter payment details" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Checkout</button>
+        </form>
+    </div>
+
+    <script>
+        // Fetch Profile
+        fetch('http://localhost:8080/api/User/profile')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('profileDetails').innerHTML = `
+                    <p><strong>Name:</strong> ${data.name}</p>
+                    <p><strong>Email:</strong> ${data.email}</p>
+                `;
+            });
+
+        // Handle Checkout
+        document.getElementById('checkoutForm').onsubmit = (e) => {
+            e.preventDefault();
+            fetch('http://localhost:8080/api/User/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    propertyId: document.getElementById('propertyId').value,
+                    paymentDetails: document.getElementById('paymentDetails').value,
+                }),
+            }).then(response => alert('Checkout Successful!')).catch(err => console.error(err));
+        };
+    </script>
+</body>
+</html>

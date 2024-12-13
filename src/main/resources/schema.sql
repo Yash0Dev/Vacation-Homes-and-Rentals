@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS property (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    location VARCHAR(255),
+    price DOUBLE,
+    type VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS "user" (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255),
+    password VARCHAR(255)
+);
