@@ -1,1 +1,0 @@
-# Vacation-Homes-and-Rentals
